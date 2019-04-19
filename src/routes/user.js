@@ -4,7 +4,7 @@ const User = require('../models/user')
 const router = new express.Router()
 const error = require("../Error/error")
 
-router.post('/users', async (req, res) => {
+router.post('/users/signup', async (req, res) => {
     const user = new User(req.body)
 
     try {
@@ -24,6 +24,17 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
+router.patch('/users/changepassword', async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
+        user.password=req.body.newPassword
+        await user.save()
+        res.status(201).send(user)
+    } catch (e) {
+        e.message=error.getError("UNABLE_TO_CHANGE_PASSWORD");
+        res.status(422).send(error.prepareErrorObject(e));
+    }
+})
 // router.get('/users', async (req, res) => {
 //     try {
 //         const users = await User.find({})

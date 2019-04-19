@@ -2,5 +2,9 @@
 "UNABLE_TO_LOGIN":{
     "message":"Not able to login with given credentials",
     "code":"422"
+},
+"UNABLE_TO_CHANGE_PASSWORD":{
+    "message":"Not able to change password. Error occured!",
+    "code":"422"
 }
 }
