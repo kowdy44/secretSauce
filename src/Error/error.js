@@ -1,4 +1,5 @@
 let error=require("./error-message.json");
+
 getError=function(errorCode){
     return error[errorCode].message;
 }
@@ -9,6 +10,6 @@ prepareErrorObject= function(e){
     return err;
 }
 module.exports = {
-    getError:getError,
-    prepareErrorObject:prepareErrorObject
+    getError,
+    prepareErrorObject
 };
