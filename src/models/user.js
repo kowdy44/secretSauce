@@ -60,11 +60,21 @@ userSchema.statics.findByCredentials = async (email, password) => {
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-        throw new Error('Unable to login')
+        throw new Error(error.getError('UNABLE_TO_LOGIN'))
     }
 
     return user
 }
+// Hash the plain text password before saving
+userSchema.pre('save', async function (next) {
+    const user = this
+
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
+    }
+
+    next()
+})
 
 //Exporting the mongoose model of user created from userschema.
 const User = mongoose.model('User', userSchema);
