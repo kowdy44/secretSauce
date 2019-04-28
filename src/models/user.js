@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const error = require('../Error/error');
 const jsonwebtoken = require("jsonwebtoken");
+const key = require("../middleware/key.json");
 
 userSchemaObject = {
     name: {
@@ -95,7 +96,7 @@ userSchema.statics.getActiveUser = async (filter) => {
 }
 
 userSchema.methods.generateAuthToken = async function (){
-    let token= jsonwebtoken.sign({_id:this._id.toString()},"newSecret");
+    let token= jsonwebtoken.sign({_id:this._id.toString()},key["secret"]);
     this.tokens.push({token});
     await this.save();
     return token;
