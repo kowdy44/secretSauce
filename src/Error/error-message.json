@@ -6,5 +6,9 @@
 "UNABLE_TO_CHANGE_PASSWORD":{
     "message":"Not able to change password. Error occured!",
     "code":"422"
+},
+"USER_NOT_FOUND":{
+    "message":"Username not found!!! Try another username and password combination.",
+    "code":"422"
 }
 }
