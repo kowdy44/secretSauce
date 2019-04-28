@@ -3,7 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const error = require('../Error/error');
 
-userSchemaObject={
+userSchemaObject = {
     name: {
         type: String,
         required: true,
@@ -40,6 +40,10 @@ userSchemaObject={
                 throw new Error('Age must be a postive number')
             }
         }
+    },
+    isdeleted: {
+        type: Boolean,
+        default: false
     }
 };
 
@@ -50,7 +54,7 @@ const userSchema = new mongoose.Schema(userSchemaObject);
 //Adding new method to user schema
 /* To find user based on credentials given in this case email and password */
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email })
+    const user = await User.getActiveUser(email)
 
     if (!user) {
         // throw new Error('Unable to login')
@@ -64,6 +68,19 @@ userSchema.statics.findByCredentials = async (email, password) => {
     }
 
     return user
+}
+
+//get ative users
+userSchema.statics.getActiveUser = async (email) => {
+    const user = await User.findOne({ email })
+
+    if (!user || user.isdeleted) {
+        // active user not found.
+        throw new Error(error.getError('NOT_ACTIVE_USER'));
+    } else {
+        return user;
+    }
+
 }
 // Hash the plain text password before saving
 userSchema.pre('save', async function (next) {

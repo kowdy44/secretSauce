@@ -1,7 +1,13 @@
 let error=require("./error-message.json");
 
 getError=function(errorCode){
-    return error[errorCode].message;
+    if(error[errorCode]){
+        return error[errorCode].message;
+    }
+    else{
+        return errorCode;
+    }
+    
 }
 
 prepareErrorObject= function(e){
