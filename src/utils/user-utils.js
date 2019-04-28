@@ -1,4 +1,4 @@
-prepareRes=function(user){
+prepareUserRes=function(user){
 let obj={};
 allowedFields=["email","name","_id"]
 allowedFields.forEach(element => {
@@ -7,5 +7,5 @@ allowedFields.forEach(element => {
 return obj;
 }
 module.exports={
-    prepareRes
+    prepareUserRes
 }

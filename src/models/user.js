@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const error = require('../Error/error');
+const jsonwebtoken = require("jsonwebtoken");
 
 userSchemaObject = {
     name: {
@@ -44,7 +45,15 @@ userSchemaObject = {
     isdeleted: {
         type: Boolean,
         default: false
-    }
+    },
+    tokens:[
+        {
+            token:{
+                type:String,
+                required:true,
+            }
+        }
+    ]
 };
 
 
@@ -54,7 +63,7 @@ const userSchema = new mongoose.Schema(userSchemaObject);
 //Adding new method to user schema
 /* To find user based on credentials given in this case email and password */
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.getActiveUser(email)
+    const user = await User.getActiveUser({email})
 
     if (!user) {
         // throw new Error('Unable to login')
@@ -70,18 +79,29 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user
 }
 
-//get ative users
-userSchema.statics.getActiveUser = async (email) => {
-    const user = await User.findOne({ email })
+//get active users only : based on isdeleted Flag of User.
+userSchema.statics.getActiveUser = async (filter) => {
+    const user = await User.findOne(filter)
 
-    if (!user || user.isdeleted) {
+    if (!user) {
         // active user not found.
+        throw new Error(error.getError('USER_NOT_FOUND'));
+    }else if(user.isdeleted){
         throw new Error(error.getError('NOT_ACTIVE_USER'));
     } else {
         return user;
     }
 
 }
+
+userSchema.methods.generateAuthToken = async function (){
+    let token= jsonwebtoken.sign({_id:this._id.toString()},"newSecret");
+    this.tokens.push({token});
+    await this.save();
+    return token;
+
+}
+
 // Hash the plain text password before saving
 userSchema.pre('save', async function (next) {
     const user = this

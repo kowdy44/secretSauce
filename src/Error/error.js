@@ -1,18 +1,24 @@
-let error=require("./error-message.json");
+let error = require("./error-message.json");
 
-getError=function(errorCode){
-    if(error[errorCode]){
+getError = function (errorCode) {
+    if (error[errorCode]) {
         return error[errorCode].message;
     }
-    else{
+    else {
         return errorCode;
     }
-    
+
 }
 
-prepareErrorObject= function(e){
-    let err= new Error();
-    err.message=e.message;
+prepareErrorObject = function (errorCode) {
+    let err = new Error();
+    
+    if(errorCode instanceof Error){
+        err.message = errorCode.message
+    }else{
+        err.message = getError(errorCode);
+    }
+    
     return err;
 }
 module.exports = {

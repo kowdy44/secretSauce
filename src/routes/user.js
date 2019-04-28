@@ -4,6 +4,8 @@ const User = require('../models/user')
 const router = new express.Router()
 const error = require("../Error/error")
 const userUtil = require("../utils/user-utils");
+const jsonwebtoken = require("jsonwebtoken");
+const auth = require("../middleware/authentication");
 
 router.post('/users/signup', async (req, res) => {
     const user = new User(req.body)
@@ -11,7 +13,7 @@ router.post('/users/signup', async (req, res) => {
     try {
         await user.save()
 
-        res.status(201).send(userUtil.prepareRes(user))
+        res.status(201).send(userUtil.prepareUserRes(user))
     } catch (e) {
         res.status(400).send(e)
     }
@@ -20,10 +22,9 @@ router.post('/users/signup', async (req, res) => {
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
-
-        
-
-        res.send(userUtil.prepareRes(user))
+        // const token = jsonwebtoken.sign({_id:user._id},"ThisisSecret");
+        let token = await user.generateAuthToken();
+        res.status(200).send({_id:token});
     } catch (e) {
         res.status(422).send(error.prepareErrorObject(e))
     }
@@ -35,11 +36,15 @@ router.patch('/users/changepassword', async (req, res) => {
         user.password=req.body.newPassword
         await user.save()
 
-        res.status(201).send(userUtil.prepareRes(user))
+        res.status(201).send(userUtil.prepareUserRes(user))
     } catch (e) {
-        e.message=error.getError("UNABLE_TO_CHANGE_PASSWORD");
-        res.status(422).send(error.prepareErrorObject(e));
+        // e.message=error.getError("UNABLE_TO_CHANGE_PASSWORD");
+        res.status(422).send(error.prepareErrorObject("UNABLE_TO_CHANGE_PASSWORD"));
     }
+})
+
+router.get('/users/me', auth ,async (req, res) => {
+    return res.status(200).send(req.user);
 })
 // router.get('/users', async (req, res) => {
 //     try {
@@ -85,7 +90,7 @@ router.patch('/users/updateUser/:id', async (req, res) => {
             return res.status(404).send()
         }
         
-        res.send(userUtil.prepareRes(user))
+        res.send(userUtil.prepareUserRes(user))
     } catch (e) {
         res.status(400).send(e)
     }
