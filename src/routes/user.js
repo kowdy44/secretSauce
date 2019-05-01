@@ -6,14 +6,19 @@ const error = require("../Error/error")
 const userUtil = require("../utils/user-utils");
 const jsonwebtoken = require("jsonwebtoken");
 const auth = require("../middleware/authentication");
+const userEmail =require("../utils/email/user-email");
 
 router.post('/users/signup', async (req, res) => {
     const user = new User(req.body)
 
     try {
         await user.save()
-
-        res.status(201).send(userUtil.prepareUserRes(user))
+        let userRes={
+            userDetail:userUtil.prepareUserRes(user),
+            message:"Signup successful!"
+        }
+        res.status(201).send(userRes);
+        userEmail.sendEmailSignUp(user.email);
     } catch (e) {
         res.status(400).send(e)
     }
