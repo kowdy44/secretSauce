@@ -12,9 +12,12 @@ router.post('/users/signup', async (req, res) => {
     const user = new User(req.body)
 
     try {
-        await user.save()
+        await user.save();
+        //it generates token and saves the token to user model
+        let token = await user.generateAuthToken();
         let userRes={
             userDetail:userUtil.prepareUserRes(user),
+            _id:token,
             message:"Signup successful!"
         }
         res.status(201).send(userRes);
