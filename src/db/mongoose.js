@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-
-mongoose.connect('mongodb://127.0.0.1:27017/appdb', {
+let mongodbURI=process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017';
+mongoose.connect(mongodbURI+'/appdb', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false
