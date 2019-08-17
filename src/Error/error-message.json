@@ -1,22 +1,26 @@
 {
     "UNABLE_TO_LOGIN": {
         "message": "Not able to login with given credentials",
-        "code": "422"
+        "code": 422
     },
     "UNABLE_TO_CHANGE_PASSWORD": {
         "message": "Not able to change password. Error occured!",
-        "code": "422"
+        "code": 422
     },
     "USER_NOT_FOUND": {
+        "message": "Username not found!!! ",
+        "code": 422
+    },
+    "USER_CREDENTAILS_NOT_FOUND":{
         "message": "Username not found!!! Try another username and password combination.",
-        "code": "422"
+        "code": 422
     },
     "NOT_ACTIVE_USER": {
         "message": "Account deactivated!!! Contact Admin to activate. Drop mail here kowdy44@gmail.com",
-        "code": "422"
+        "code": 422
     },
     "AUTH_REQUIRED":{
         "message": "Authentication Required!!!",
-        "code": "422"
+        "code": 422
     }
 }

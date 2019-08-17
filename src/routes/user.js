@@ -23,7 +23,7 @@ router.post('/users/signup', async (req, res) => {
         res.status(201).send(userRes);
         userEmail.sendEmailSignUp(user.email);
     } catch (e) {
-        res.status(400).send(e)
+        error.sendError(res, e.message)
     }
 })
 
@@ -34,11 +34,11 @@ router.post('/users/login', async (req, res) => {
         let token = await user.generateAuthToken();
         res.status(200).send({_id:token});
     } catch (e) {
-        res.status(422).send(error.prepareErrorObject(e))
+        error.sendError(res, e.message)
     }
 })
 
-router.patch('/users/changepassword', async (req, res) => {
+router.patch('/users/changepassword', auth , async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
         user.password=req.body.newPassword
@@ -47,12 +47,13 @@ router.patch('/users/changepassword', async (req, res) => {
         res.status(201).send(userUtil.prepareUserRes(user))
     } catch (e) {
         // e.message=error.getError("UNABLE_TO_CHANGE_PASSWORD");
-        res.status(422).send(error.prepareErrorObject("UNABLE_TO_CHANGE_PASSWORD"));
+        // res.status(422).send(error.prepareErrorObject("UNABLE_TO_CHANGE_PASSWORD"));
+        error.sendError(res, e.message)
     }
 })
 
 router.get('/users/me', auth ,async (req, res) => {
-    return res.status(200).send(req.user);
+    return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
 })
 // router.get('/users', async (req, res) => {
 //     try {
@@ -79,28 +80,24 @@ router.get('/users/me', auth ,async (req, res) => {
 //     }
 // })
 
-router.patch('/users/updateUser/:id', async (req, res) => {
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'email','age']
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
-
-    if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' })
-    }
+router.patch('/users/updateUser/:email', async (req, res) => {
 
     try {
-        const user = await User.findById(req.params.id)
+        const updates = Object.keys(req.body)
+        const allowedUpdates = ['name', 'age']
+        const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
+        if (!isValidOperation) {
+            throw new Error("NOT_ABLE_TO_UPDATE_USER");
+        }
+
+
+        let user = await User.getActiveUser({ email: req.params.email });
         updates.forEach((update) => user[update] = req.body[update])
         await user.save()
-
-        if (!user) {
-            return res.status(404).send()
-        }
-        
         res.send(userUtil.prepareUserRes(user))
     } catch (e) {
-        res.status(400).send(e)
+        error.sendError(res, e.message)
     }
 })
 

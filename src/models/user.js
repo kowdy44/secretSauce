@@ -68,13 +68,13 @@ userSchema.statics.findByCredentials = async (email, password) => {
 
     if (!user) {
         // throw new Error('Unable to login')
-        throw new Error(error.getError('USER_NOT_FOUND'));
+        throw new Error('USER_CREDENTAILS_NOT_FOUND');
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-        throw new Error(error.getError('UNABLE_TO_LOGIN'))
+        throw new Error('UNABLE_TO_LOGIN')
     }
 
     return user
@@ -86,9 +86,9 @@ userSchema.statics.getActiveUser = async (filter) => {
 
     if (!user) {
         // active user not found.
-        throw new Error(error.getError('USER_NOT_FOUND'));
+        throw new Error('USER_NOT_FOUND');
     }else if(user.isdeleted){
-        throw new Error(error.getError('NOT_ACTIVE_USER'));
+        throw new Error('NOT_ACTIVE_USER');
     } else {
         return user;
     }
