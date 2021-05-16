@@ -9,6 +9,7 @@ const auth = require("../middleware/authentication");
 const userEmail =require("../utils/email/user-email");
 
 router.post('/users/signup', async (req, res) => {
+    req
     const user = new User(req.body)
 
     try {
@@ -53,6 +54,7 @@ router.patch('/users/changepassword', auth , async (req, res) => {
 })
 
 router.get('/users/me', auth ,async (req, res) => {
+    console.log("Hi")
     return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
 })
 // router.get('/users', async (req, res) => {
