@@ -53,9 +53,15 @@ router.patch('/users/changepassword', auth , async (req, res) => {
     }
 })
 
-router.get('/users/me', auth ,async (req, res) => {
-    console.log("Hi")
-    return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
+router.get('/users/me', auth, async (req, res) => {
+    try {
+        console.log("Hi")
+    return res.status(200).send("THis is string message")
+    // return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
+    } catch (e) {
+        error.sendError(res, e.message)
+    }
+    
 })
 // router.get('/users', async (req, res) => {
 //     try {

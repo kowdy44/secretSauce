@@ -12,8 +12,9 @@ let auth = async function(req,res,next){
         }
         req.user = user;
         next();    
-    } catch (error) {
-        res.status(401).send(errorjs.prepareErrorObject("AUTH_REQUIRED"));
+    } catch (e) {
+        // res.status(401).send(errorjs.prepareErrorObject("AUTH_REQUIRED"));
+        errorjs.sendError(res, "AUTH_REQUIRED")
     }
     
 }
