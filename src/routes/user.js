@@ -63,6 +63,15 @@ router.get('/users/me', auth, async (req, res) => {
     }
     
 })
+router.get('/users/testing', async (req, res) => {
+    try {
+    console.log("API,'/users/testing' called");
+    return res.status(200).send("Hi,This is just a message. Auth disabled here :)");
+    } catch (e) {
+        error.sendError(res, e.message)
+    }
+    
+})
 // router.get('/users', async (req, res) => {
 //     try {
 //         const users = await User.find({})
