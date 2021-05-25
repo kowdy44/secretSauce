@@ -54,7 +54,10 @@ userSchemaObject = {
                 required:true,
             }
         }
-    ]
+    ],
+    passcode:{
+        type:Number
+    }
 };
 
 

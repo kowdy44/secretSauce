@@ -39,13 +39,25 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.patch('/users/changepassword', auth , async (req, res) => {
+router.patch('/users/changepassword', async (req, res) => {
     try {
-        const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
-        user.password=req.body.newPassword
-        await user.save()
+        
+        //genarate a random number 
+        // let randomKey = 541478;
 
-        res.status(201).send(userUtil.prepareUserRes(user))
+        const random = require('random')
+        randomKey = random.int((min = 100000), (max = 999999)) 
+        //get user data by email
+        let user = await User.getActiveUser({ email: req.body.email });
+        
+        //Save passcode in DB
+        user.passcode = randomKey;
+        await user.save();
+        //send email with passcode and create API changePaswdNow to actually change passwrd
+        userEmail.sendEmailPasscode(user.email,user.passcode);
+        // e.message=error.getError("PASSCODE_EMAIL_SENT");
+        res.status(201).send("PASSCODE_EMAIL_SENT");
+        
     } catch (e) {
         // e.message=error.getError("UNABLE_TO_CHANGE_PASSWORD");
         // res.status(422).send(error.prepareErrorObject("UNABLE_TO_CHANGE_PASSWORD"));
@@ -55,9 +67,7 @@ router.patch('/users/changepassword', auth , async (req, res) => {
 
 router.get('/users/me', auth, async (req, res) => {
     try {
-        console.log("Hi")
-    return res.status(200).send("THis is string message")
-    // return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
+        return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
     } catch (e) {
         error.sendError(res, e.message)
     }
