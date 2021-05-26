@@ -2,11 +2,11 @@
 
 module.exports = function (fileName) {
 
-    const SimpleNodeLogger = require('simple-node-logger'),
+    const SimpleNodeLogger = require('simple-node-logger');
         opts = {
             logFilePath: './src/log/' + fileName,
             timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS'
-        },
+        };
         log = SimpleNodeLogger.createSimpleFileLogger(opts);
 
     function info(str) {

@@ -7,6 +7,11 @@
         "message": "Not able to change password. Error occured!",
         "code": 422
     },
+    "PASSCODE_EMAIL_SENT": {
+        "message": "Email with passcode sent !",
+        "code": 422
+    },
+    
     "USER_NOT_FOUND": {
         "message": "Username not found!!! ",
         "code": 422
