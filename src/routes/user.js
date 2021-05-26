@@ -43,24 +43,22 @@ router.patch('/users/changepassword', async (req, res) => {
     try {
         
         //genarate a random number 
-        // let randomKey = 541478;
-
         const random = require('random')
         randomKey = random.int((min = 100000), (max = 999999)) 
+        
         //get user data by email
         let user = await User.getActiveUser({ email: req.body.email });
         
         //Save passcode in DB
         user.passcode = randomKey;
         await user.save();
+        
         //send email with passcode and create API changePaswdNow to actually change passwrd
         userEmail.sendEmailPasscode(user.email,user.passcode);
-        // e.message=error.getError("PASSCODE_EMAIL_SENT");
+        
         res.status(201).send("PASSCODE_EMAIL_SENT");
         
     } catch (e) {
-        // e.message=error.getError("UNABLE_TO_CHANGE_PASSWORD");
-        // res.status(422).send(error.prepareErrorObject("UNABLE_TO_CHANGE_PASSWORD"));
         error.sendError(res, e.message)
     }
 })
