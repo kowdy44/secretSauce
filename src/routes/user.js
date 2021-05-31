@@ -2,7 +2,7 @@ const express= require("express");
 
 const User = require('../models/user')
 const router = new express.Router()
-const error = require("../Error/error")
+const messagejs = require("../message/message.js")
 const userUtil = require("../utils/user-utils");
 const jsonwebtoken = require("jsonwebtoken");
 const auth = require("../middleware/authentication");
@@ -24,7 +24,7 @@ router.post('/users/signup', async (req, res) => {
         res.status(201).send(userRes);
         userEmail.sendEmailSignUp(user.email);
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
 })
 
@@ -35,7 +35,7 @@ router.post('/users/login', async (req, res) => {
         let token = await user.generateAuthToken();
         res.status(200).send({_id:token});
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
 })
 
@@ -64,7 +64,7 @@ router.patch('/users/forgotpassword', async (req, res) => {
         res.status(201).send("PASSCODE_EMAIL_INITIATED");
         
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
 })
 
@@ -98,7 +98,7 @@ router.patch('/users/changeforgottenpassword', async (req, res) => {
         res.status(201).send("PASSWORD_CHANGED_SUCCESSFULLY");
         
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
 })
 
@@ -110,7 +110,7 @@ router.patch('/users/logoutAll', auth ,async (req, res) => {
         res.status(201).send("LOGGED_OUT_SUCCESSFULLY");
         
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
 })
 
@@ -118,7 +118,7 @@ router.get('/users/me', auth, async (req, res) => {
     try {
         return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
     
 })
@@ -127,7 +127,7 @@ router.get('/users/testing', async (req, res) => {
     console.log("API,'/users/testing' called");
     return res.status(200).send("Hi,This is just a message. Auth disabled here :)");
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
     
 })
@@ -156,7 +156,7 @@ router.get('/users/testing', async (req, res) => {
 //     }
 // })
 
-router.patch('/users/updateUser/:email', async (req, res) => {
+router.patch('/users/updateUser/:email', auth ,async (req, res) => {
 
     try {
         const updates = Object.keys(req.body)
@@ -173,7 +173,7 @@ router.patch('/users/updateUser/:email', async (req, res) => {
         await user.save()
         res.send(userUtil.prepareUserRes(user))
     } catch (e) {
-        error.sendError(res, e.message)
+        messagejs.sendError(res, e.message)
     }
 })
 

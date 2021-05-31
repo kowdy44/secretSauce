@@ -21,7 +21,7 @@
         "code": 422
     },
     "NOT_ACTIVE_USER": {
-        "message": "Account deactivated!!! Contact Admin to activate. Drop mail here kowdy44@gmail.com",
+        "message": "Account deactivated!!! Contact Admin to activate :)",
         "code": 422
     },
     "AUTH_REQUIRED":{

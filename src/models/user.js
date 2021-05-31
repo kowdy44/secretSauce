@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs');
-const error = require('../Error/error');
 const jsonwebtoken = require("jsonwebtoken");
 const key = require("../middleware/key.json");
 

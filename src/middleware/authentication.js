@@ -1,6 +1,6 @@
 const jsonwebtoken=require("jsonwebtoken");
 const User = require("../models/user");
-const errorjs = require("../Error/error");
+const messagejs = require("../message/message.js");
 const key = require("./key.json")
 let auth = async function(req,res,next){
     try {
@@ -14,8 +14,8 @@ let auth = async function(req,res,next){
         req.user = user;
         next();    
     } catch (e) {
-        // res.status(401).send(errorjs.prepareErrorObject("AUTH_REQUIRED"));
-        errorjs.sendError(res, "AUTH_REQUIRED")
+        // res.status(401).send(messagejs.prepareErrorObject("AUTH_REQUIRED"));
+        messagejs.sendError(res, "AUTH_REQUIRED")
     }
     
 }
