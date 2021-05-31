@@ -1,4 +1,4 @@
-let error = require("./error-message.json");
+let error = require("./message.json");
 
 // getError = function (errorCode) {
 //     if (error[errorCode]) {

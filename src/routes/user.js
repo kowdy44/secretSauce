@@ -39,9 +39,14 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.patch('/users/changepassword', async (req, res) => {
+router.patch('/users/forgotpassword', async (req, res) => {
     try {
         
+        //Email is required to generate passcode.
+        if(!req.body.email){
+            throw new Error("EMAIL_IS_REQUIRED")
+        }
+
         //genarate a random number 
         const random = require('random')
         randomKey = random.int((min = 100000), (max = 999999)) 
@@ -56,7 +61,53 @@ router.patch('/users/changepassword', async (req, res) => {
         //send email with passcode and create API changePaswdNow to actually change passwrd
         userEmail.sendEmailPasscode(user.email,user.passcode);
         
-        res.status(201).send("PASSCODE_EMAIL_SENT");
+        res.status(201).send("PASSCODE_EMAIL_INITIATED");
+        
+    } catch (e) {
+        error.sendError(res, e.message)
+    }
+})
+
+router.patch('/users/changeforgottenpassword', async (req, res) => {
+    try {
+        if(!req.body.email){
+            throw new Error("EMAIL_IS_REQUIRED")
+        }
+
+        //get user data by email
+        let user = await User.getActiveUser({ email: req.body.email });
+        
+        //Recieve new password, confirm password and passcode
+        let newpassword = req.body.newpassword;
+        let confirmpassword = req.body.confirmpassword;
+
+        //Recieve new password, confirm password and passcode
+        //Compare new and confirm passwords
+        if(!newpassword && !confirmpassword && newpassword!==confirmpassword)
+        {
+            throw new Error("PASSWORD_MISMATCH_WITH_CONFIRM_PASSWORD")
+        }
+        if(!req.body.passcode && !user.passcode && req.body.passcode!==user.passcode ){
+            throw new Error("PASSCODE_MISMATCH")
+        }
+        
+        //bit hash the new password and save in DB
+        user.passcode=0;
+        user.password=newpassword;
+        await user.save();
+        res.status(201).send("PASSWORD_CHANGED_SUCCESSFULLY");
+        
+    } catch (e) {
+        error.sendError(res, e.message)
+    }
+})
+
+router.patch('/users/logoutAll', auth ,async (req, res) => {
+    try {
+        //Need to write logic here
+        req.user.tokens=[];
+        req.user.save();
+        res.status(201).send("LOGGED_OUT_SUCCESSFULLY");
         
     } catch (e) {
         error.sendError(res, e.message)

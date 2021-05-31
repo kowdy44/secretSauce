@@ -9,7 +9,7 @@ let auth = async function(req,res,next){
         const decoded = jsonwebtoken.verify(token,key["secret"]);
         const user = await User.getActiveUser({_id:decoded._id,'tokens.token':token});
         if(!user){
-            throw new Error();
+            throw new Error("USER_NOT_FOUND");
         }
         req.user = user;
         next();    

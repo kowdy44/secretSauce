@@ -27,5 +27,13 @@
     "AUTH_REQUIRED":{
         "message": "Authentication Required!!!",
         "code": 422
+    },
+    "EMAIL_IS_REQUIRED":{
+        "message": "Email ID is Required!!!",
+        "code": 422
+    },
+    "PASSCODE_EMAIL_INITIATED":{
+        "message": "Initiated an Email with passcode.",
+        "code": 422
     }
 }
