@@ -114,14 +114,26 @@ router.patch('/users/logoutAll', auth ,async (req, res) => {
     }
 })
 
+router.patch('/users/changepassword', auth, async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
+        user.password=req.body.newPassword
+        await user.save()
+        res.status(201).send(userUtil.prepareUserRes(user))
+    } catch (e) {
+        messagejs.sendError(res, e.message)
+    }
+})
+
 router.get('/users/me', auth, async (req, res) => {
     try {
-        return res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
+        res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
     } catch (e) {
         messagejs.sendError(res, e.message)
     }
     
 })
+
 router.get('/users/testing', async (req, res) => {
     try {
     console.log("API,'/users/testing' called");
