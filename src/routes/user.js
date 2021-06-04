@@ -61,8 +61,8 @@ router.patch('/users/forgotpassword', async (req, res) => {
         //send email with passcode and create API changePaswdNow to actually change passwrd
         userEmail.sendEmailPasscode(user.email,user.passcode);
         
-        res.status(201).send("PASSCODE_EMAIL_INITIATED");
-        
+        // res.status(201).send("PASSCODE_EMAIL_INITIATED");
+        messagejs.sendSuccess(res, "PASSCODE_EMAIL_INITIATED")
     } catch (e) {
         messagejs.sendError(res, e.message)
     }
@@ -95,8 +95,8 @@ router.patch('/users/changeforgottenpassword', async (req, res) => {
         user.passcode=0;
         user.password=newpassword;
         await user.save();
-        res.status(201).send("PASSWORD_CHANGED_SUCCESSFULLY");
-        
+        // res.status(201).send("PASSWORD_CHANGED_SUCCESSFULLY");
+        messagejs.sendError(res,"PASSWORD_CHANGED_SUCCESSFULLY")
     } catch (e) {
         messagejs.sendError(res, e.message)
     }
@@ -107,8 +107,8 @@ router.patch('/users/logoutAll', auth ,async (req, res) => {
         //Need to write logic here
         req.user.tokens=[];
         req.user.save();
-        res.status(201).send("LOGGED_OUT_SUCCESSFULLY");
-        
+        // res.status(201).send("LOGGED_OUT_SUCCESSFULLY");
+        messagejs.sendError(res,"LOGGED_OUT_SUCCESSFULLY")
     } catch (e) {
         messagejs.sendError(res, e.message)
     }
@@ -119,7 +119,8 @@ router.patch('/users/changepassword', auth, async (req, res) => {
         const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
         user.password=req.body.newPassword
         await user.save()
-        res.status(201).send(userUtil.prepareUserRes(user))
+        // res.status(201).send(userUtil.prepareUserRes(user))
+        messagejs.sendError(res,"PASSWORD_CHANGED");
     } catch (e) {
         messagejs.sendError(res, e.message)
     }

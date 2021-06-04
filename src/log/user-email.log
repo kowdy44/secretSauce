@@ -61,3 +61,6 @@
 2021-05-31 06:45:36.705 INFO  Email sent(passcode): chinmayans44@gmail.com, messageId:<33a61b2c-a6cd-e934-8f65-a217d4cbe3e8@gmail.com>, info.response:250 2.0.0 OK  1622443537 o9sm10892158pfh.217 - gsmtp  
 2021-05-31 07:30:50.872 INFO  Email sent: chinmayans44@gmail.com, messageId:<7bf34961-6263-75ae-5e24-d06e45d5fcab@gmail.com>, info.response:250 2.0.0 OK  1622446251 y5sm3048352pfb.19 - gsmtp  
 2021-05-31 07:32:11.596 INFO  Email sent(passcode): chinmayans44@gmail.com, messageId:<46e9af3f-4782-c998-62f2-1508f3d8cf4c@gmail.com>, info.response:250 2.0.0 OK  1622446332 ge5sm10509537pjb.45 - gsmtp  
+2021-06-04 11:41:45.303 INFO  Error: queryA ETIMEOUT smtp.gmail.com : Email sending(passcode) failed to chinmayans44@gmail.com 
+2021-06-04 11:43:38.836 INFO  Error: queryA ETIMEOUT smtp.gmail.com : Email sending(passcode) failed to chinmayans44@gmail.com 
+2021-06-04 11:45:11.315 INFO  Email sent(passcode): chinmayans44@gmail.com, messageId:<96e719e9-2d6a-7ae1-a96d-c05daec85352@gmail.com>, info.response:250 2.0.0 OK  1622807110 b23sm4476416pjo.26 - gsmtp  

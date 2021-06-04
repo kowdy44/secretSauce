@@ -34,6 +34,18 @@
     },
     "PASSCODE_EMAIL_INITIATED":{
         "message": "Initiated an Email with passcode.",
-        "code": 422
+        "code": 200
+    },
+    "PASSWORD_CHANGED_SUCCESSFULLY":{
+        "message": "Password changed successfully",
+        "code": 200
+    },
+    "LOGGED_OUT_SUCCESSFULLY":{
+        "message": "You have logged out successfully",
+        "code": 200
+    },
+    "PASSWORD_CHANGED":{
+        "message": "Password changed successfully",
+        "code": 200
     }
 }
