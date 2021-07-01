@@ -1,13 +1,13 @@
 // const log = require('simple-node-logger').createSimpleLogger('./user-email.log');
-
+"use strict"
 module.exports = function (fileName) {
 
     const SimpleNodeLogger = require('simple-node-logger');
-        opts = {
+        let opts = {
             logFilePath: './src/log/' + fileName,
             timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS'
         };
-        log = SimpleNodeLogger.createSimpleFileLogger(opts);
+        let log = SimpleNodeLogger.createSimpleFileLogger(opts);
 
     function info(str) {
         

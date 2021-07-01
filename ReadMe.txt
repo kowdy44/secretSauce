@@ -4,5 +4,5 @@ How to run application:
 3. run node .
 
 To do list:
-bring all constants at one place and place it in a json file
-write and test /updateUser:id API
+1.logout API
+2. code cleanup by adding "use strict"

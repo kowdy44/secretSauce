@@ -1,3 +1,4 @@
+"use strict"
 const jsonwebtoken=require("jsonwebtoken");
 const User = require("../models/user");
 const messagejs = require("../message/message.js");
