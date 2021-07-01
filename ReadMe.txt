@@ -6,3 +6,4 @@ How to run application:
 To do list:
 1.logout API
 2. code cleanup by adding "use strict"
+3. Exploring SSO login
