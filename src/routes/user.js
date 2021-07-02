@@ -50,7 +50,7 @@ router.patch('/users/forgotpassword', async (req, res) => {
 
         //genarate a random number 
         const random = require('random')
-        randomKey = random.int((min = 100000), (max = 999999)) 
+        let randomKey = random.int(100000, 999999) 
         
         //get user data by email
         let user = await User.getActiveUser({ email: req.body.email });
@@ -84,11 +84,11 @@ router.patch('/users/changeforgottenpassword', async (req, res) => {
 
         //Recieve new password, confirm password and passcode
         //Compare new and confirm passwords
-        if(!newpassword && !confirmpassword && newpassword!==confirmpassword)
+        if(!newpassword || !confirmpassword || newpassword!==confirmpassword)
         {
             throw new Error("PASSWORD_MISMATCH_WITH_CONFIRM_PASSWORD")
         }
-        if(!req.body.passcode && !user.passcode && req.body.passcode!==user.passcode ){
+        if(!req.body.passcode || !user.passcode || req.body.passcode!==user.passcode ){
             throw new Error("PASSCODE_MISMATCH")
         }
         
