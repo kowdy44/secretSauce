@@ -1,4 +1,5 @@
-prepareUserRes = function (user) {
+"use strict"
+const prepareUserRes = function (user) {
     let obj = {};
     allowedFields = ["email", "name"]
     allowedFields.forEach(element => {
@@ -6,7 +7,7 @@ prepareUserRes = function (user) {
     });
     return obj;
 }
-userResp = function (user, allowedFields) {
+const userResp = function (user, allowedFields) {
     let obj = {};
     if (!allowedFields) {
         allowedFields = ["email", "name", "age"];

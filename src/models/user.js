@@ -1,10 +1,11 @@
+"use strict"
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require("jsonwebtoken");
 const key = require("../middleware/key.json");
 
-userSchemaObject = {
+const userSchemaObject = {
     name: {
         type: String,
         required: true,

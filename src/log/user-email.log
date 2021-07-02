@@ -64,3 +64,4 @@
 2021-06-04 11:41:45.303 INFO  Error: queryA ETIMEOUT smtp.gmail.com : Email sending(passcode) failed to chinmayans44@gmail.com 
 2021-06-04 11:43:38.836 INFO  Error: queryA ETIMEOUT smtp.gmail.com : Email sending(passcode) failed to chinmayans44@gmail.com 
 2021-06-04 11:45:11.315 INFO  Email sent(passcode): chinmayans44@gmail.com, messageId:<96e719e9-2d6a-7ae1-a96d-c05daec85352@gmail.com>, info.response:250 2.0.0 OK  1622807110 b23sm4476416pjo.26 - gsmtp  
+2021-07-02 18:22:45.053 INFO  Email sent: chinmayans44@gmail.com, messageId:<d8104148-9ccb-2b92-6861-434ac0ff9d83@gmail.com>, info.response:250 2.0.0 OK  1625230364 n33sm3821831pgm.55 - gsmtp  
