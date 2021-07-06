@@ -1,4 +1,5 @@
 "use strict"
+const random = require('random');
 const prepareUserRes = function (user) {
     let obj = {};
     allowedFields = ["email", "name"]
@@ -17,7 +18,14 @@ const userResp = function (user, allowedFields) {
     });
     return obj;
 }
+const genRandomNum = function(){
+    //genarate a random number 
+    let randomKey = random.int(100000, 999999);
+    return randomKey;
+}
+ 
 module.exports = {
     prepareUserRes,
-    userResp
+    userResp,
+    genRandomNum
 }

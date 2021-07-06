@@ -49,8 +49,7 @@ router.patch('/users/forgotpassword', async (req, res) => {
         }
 
         //genarate a random number 
-        const random = require('random')
-        let randomKey = random.int(100000, 999999) 
+        let randomKey= userUtil.genRandomNum();
         
         //get user data by email
         let user = await User.getActiveUser({ email: req.body.email });

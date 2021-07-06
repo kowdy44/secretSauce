@@ -64,7 +64,9 @@ const userSchemaObject = {
 //Creatting user schema with defined fields in userschemaObject.
 const userSchema = new mongoose.Schema(userSchemaObject);
 
-//Adding new method to user schema
+//Adding new statics
+//(the reason statics is used becaz it is not required to have object to use function)
+// to find by credential  to user schema
 /* To find user based on credentials given in this case email and password */
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.getActiveUser({email})
@@ -98,6 +100,7 @@ userSchema.statics.getActiveUser = async (filter) => {
 
 }
 
+//method is being used here becaz method is currently being called after an instance is being created
 userSchema.methods.generateAuthToken = async function (){
     let token= jsonwebtoken.sign({_id:this._id.toString()},key["secret"]);
     this.tokens.push({token});
