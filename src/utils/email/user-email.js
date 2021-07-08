@@ -2,7 +2,7 @@
 const sendEmail = require('./send-email');
 const logging =require('../../log/logging')('user-email.log');
 const EmailModel = require("../../models/email");
-var emailobj = new EmailModel();
+// var emailobj = new EmailModel();
 
 const sendEmailSignUp=function(emailId){
 let email=  {
@@ -12,10 +12,10 @@ let email=  {
       text: "Thank you! for signing up for App :)"
     }
     sendEmail.sendMailNow(email).then((info)=>{
-      emailobj.emailStatusUpdate(emailId,true);
+      EmailModel.emailStatusUpdate(emailId,true);
       logging.info(`Email sent: ${emailId}, messageId:${info.messageId}, info.response:${info.response} `);
     }).catch((err)=>{
-      emailobj.emailStatusUpdate(emailId,false);
+      EmailModel.emailStatusUpdate(emailId,false);
       logging.info('Error: ' + err.message + ' : Email sending failed to '+emailId);
     });
 }
@@ -27,10 +27,10 @@ const sendEmailPasscode=function(emailId,passcode){
         text: "Passcode to change password : "+passcode
       }
       sendEmail.sendMailNow(email).then((info)=>{
-        emailobj.emailStatusUpdate(emailId,true);
+        EmailModel.emailStatusUpdate(emailId,true);
         logging.info(`Email sent(passcode): ${emailId}, messageId:${info.messageId}, info.response:${info.response} `);
       }).catch((err)=>{
-        emailobj.emailStatusUpdate(emailId,false);
+        EmailModel.emailStatusUpdate(emailId,false);
         logging.info('Error: ' + err.message + ' : Email sending(passcode) failed to '+emailId);
       });
   }

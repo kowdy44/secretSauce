@@ -22,7 +22,7 @@ const emailSchemaObject = {
 const emailSchema = new mongoose.Schema(emailSchemaObject);
 
 //Methods on Email model
-emailSchema.methods.emailStatusUpdate = async function (emailID,status){
+emailSchema.statics.emailStatusUpdate = async function (emailID,status){
     try {
         
     var email=new Email();

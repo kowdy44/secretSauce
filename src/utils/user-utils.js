@@ -2,7 +2,7 @@
 const random = require('random');
 const prepareUserRes = function (user) {
     let obj = {};
-    allowedFields = ["email", "name"]
+    let allowedFields = ["email", "name"]
     allowedFields.forEach(element => {
         obj[element] = user[element];
     });
