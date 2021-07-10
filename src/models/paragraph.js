@@ -1,12 +1,14 @@
 "use strict"
 const mongoose = require('mongoose');
-const validator = require('validator')
+const validator = require('validator');
+const CommentsSection = require("./commentsSection");
 
 /*Defining paragraph json object */
 const paragraphSchemaObject = {
     title: {
         type: String,
         required: true,
+        unique: true,
         trim: true
     },
     content: {
@@ -22,9 +24,6 @@ const paragraphSchemaObject = {
                 throw new Error('Email is invalid')
             }
         }
-    },
-    comments: {
-        type: Array
     },
     isdeleted: {
         type: Boolean,
@@ -54,7 +53,24 @@ paragraphSchema.statics.createAParagraph = async (paragraph, user) => {
     await paragraphObj.save();
     return paragraphObj;
 }
+paragraphSchema.statics.paragraphPresent = async (paragraphId) => {
+    
+    let paragraph  = await Paragraph.findOne({id:paragraphId});
+    if(!paragraph){
+        return false;
+    }else{
+        return true;
+    }
+}
 
+/* Get a paragraph with comments appended on them */
+paragraphSchema.statics.getAParagraph = async (paragraphId) => {
+    
+    let paragraph = await Paragraph.findOne({title:paragraphId});
+    let comments  = await CommentsSection.getComments(paragraphId);
+    paragraph.comments = comments;
+    return paragraph;
+}
 //exporting the model
 const Paragraph = mongoose.model('Paragraph', paragraphSchema);
 module.exports = Paragraph;

@@ -16,4 +16,14 @@ router.post('/paragraphs/addNew',auth,async (req, res) => {
     }
 })
 
+router.get('/paragraphs/:id',auth,async (req, res) => {
+
+    try {
+        let paragraph = await Paragraph.getAParagraph(req.params.id);
+        res.status(200).send(paragraph);
+    } catch (e) {
+        messagejs.sendError(res, e.message)
+    }
+})
+
 module.exports = router
