@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const CommentsSection = require("./commentsSection");
-
+const utilsjs = require("../utils/user-utils");
 /*Defining paragraph json object */
 const paragraphSchemaObject = {
     title: {
@@ -68,7 +68,12 @@ paragraphSchema.statics.getAParagraph = async (paragraphId) => {
     
     let paragraph = await Paragraph.findOne({title:paragraphId});
     let comments  = await CommentsSection.getComments(paragraphId);
-    paragraph.comments = comments;
+    let arr=[];
+    comments.forEach(element => {
+        let obj = utilsjs.objectFormat(element,["userEmail","comment","paragraphId"]);
+        arr.push(obj);
+    });
+    paragraph.comments = arr;
     return paragraph;
 }
 //exporting the model
