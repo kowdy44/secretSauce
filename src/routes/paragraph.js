@@ -17,7 +17,7 @@ router.post('/paragraphs/addNew',auth,async (req, res) => {
     }
 })
 
-router.get('/paragraphs/:id',auth,async (req, res) => {
+router.get('/paragraphs/getOne/:id',auth,async (req, res) => {
 
     try {
         let paragraph = await Paragraph.getAParagraph(req.params.id);
@@ -29,6 +29,23 @@ router.get('/paragraphs/:id',auth,async (req, res) => {
         });
         paragraph.comments = arr;
         res.status(200).send(paragraph);
+    } catch (e) {
+        messagejs.sendError(res, e.message)
+    }
+})
+
+router.get('/paragraphs/getAll',auth,async (req, res) => {
+
+    try {
+        let paragraphs = await Paragraph.getAllParagraph(req.user.email);
+        
+        let arr=[];
+        paragraphs.forEach(element => {
+            let obj = utiljs.objectFormat(element,["title","content","userEmail"]);
+            arr.push(obj);
+        });
+        
+        res.status(200).send(arr);
     } catch (e) {
         messagejs.sendError(res, e.message)
     }

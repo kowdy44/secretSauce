@@ -72,6 +72,14 @@ paragraphSchema.statics.getAParagraph = async (paragraphId) => {
     paragraph.comments = comments;
     return paragraph;
 }
+
+paragraphSchema.statics.getAllParagraph = async (email) => {
+    
+    let paragraphs = await Paragraph.find({userEmail:email});
+    
+    return paragraphs;
+}
+
 //exporting the model
 const Paragraph = mongoose.model('Paragraph', paragraphSchema);
 module.exports = Paragraph;
