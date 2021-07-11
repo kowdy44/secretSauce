@@ -5,7 +5,7 @@ const router = new express.Router();
 const Paragraph = require('../models/paragraph')
 const auth = require("../middleware/authentication");
 const messagejs = require("../message/message.js");
-const utiljs = require("../utils/user-utils");
+const utiljs = require("../utils/utils");
 
 router.post('/paragraphs/addNew',auth,async (req, res) => {
 
