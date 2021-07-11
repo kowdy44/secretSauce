@@ -114,6 +114,27 @@ router.patch('/users/logoutAll', auth ,async (req, res) => {
     }
 })
 
+router.patch('/users/logout', auth ,async (req, res) => {
+    try {
+        //Need to write logic here
+        let currentToken = req.token;
+        let currentIndex;
+        for (let index = 0; index < req.user.tokens.length; index++) {
+            const element = req.user.tokens[index];
+            if (currentToken===element.token){
+                currentIndex=index;
+                break;
+            }
+            
+        }
+        req.user.tokens.splice(currentIndex,1);
+        req.user.save();
+        messagejs.sendError(res,"SESSION_LOGGED_OUT_SUCCESSFULLY")
+    } catch (e) {
+        messagejs.sendError(res, e.message)
+    }
+})
+
 router.patch('/users/changepassword', auth, async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
