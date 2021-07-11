@@ -1,23 +1,6 @@
 "use strict"
 const random = require('random');
-const prepareUserRes = function (user) {
-    let obj = {};
-    let allowedFields = ["email", "name"]
-    allowedFields.forEach(element => {
-        obj[element] = user[element];
-    });
-    return obj;
-}
-const userResp = function (user, allowedFields) {
-    let obj = {};
-    if (!allowedFields) {
-        allowedFields = ["email", "name", "age"];
-    }
-    allowedFields.forEach(ele => {
-        obj[ele] = user[ele];
-    });
-    return obj;
-}
+
 const objectFormat =  function(object,allowedFieldsArray){
     let obj = {};
 
@@ -33,8 +16,6 @@ const genRandomNum = function(){
 }
  
 module.exports = {
-    prepareUserRes,
-    userResp,
     genRandomNum,
     objectFormat
 }

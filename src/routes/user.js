@@ -18,7 +18,7 @@ router.post('/users/signup', async (req, res) => {
         //it generates token and saves the token to user model
         let token = await user.generateAuthToken();
         let userRes={
-            userDetail:userUtil.prepareUserRes(user),
+            userDetail:userUtil.objectFormat(user,["email","name","age"]),
             _id:token,
             message:"Signup successful!"
         }
@@ -140,7 +140,6 @@ router.patch('/users/changepassword', auth, async (req, res) => {
         const user = await User.findByCredentials(req.body.email, req.body.oldPassword);
         user.password=req.body.newPassword
         await user.save()
-        // res.status(201).send(userUtil.prepareUserRes(user))
         messagejs.sendError(res,"PASSWORD_CHANGED");
     } catch (e) {
         messagejs.sendError(res, e.message)
@@ -149,7 +148,7 @@ router.patch('/users/changepassword', auth, async (req, res) => {
 
 router.get('/users/me', auth, async (req, res) => {
     try {
-        res.status(200).send(userUtil.userResp(req.user,["email","name","age"]));
+        res.status(200).send(userUtil.objectFormat(req.user,["email","name","age"]));
     } catch (e) {
         messagejs.sendError(res, e.message)
     }
@@ -181,7 +180,7 @@ router.patch('/users/updateUser/:email', auth ,async (req, res) => {
         let user = await User.getActiveUser({ email: req.params.email });
         updates.forEach((update) => user[update] = req.body[update])
         await user.save()
-        res.send(userUtil.prepareUserRes(user))
+        res.send(userUtil.objectFormat(user,["email","name","age"]))
     } catch (e) {
         messagejs.sendError(res, e.message)
     }
