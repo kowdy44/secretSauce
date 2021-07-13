@@ -59,7 +59,7 @@ paragraphSchema.statics.paragraphPresent = async (paragraphId) => {
     if(!paragraph){
         return false;
     }else{
-        return true;
+        return paragraph;
     }
 }
 
