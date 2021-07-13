@@ -7,6 +7,7 @@ let auth = async function(req,res,next){
     try {
         //For checking auth token and authenticating the user, throw Error if not authenticated.
         const token= req.header("Authorization");
+        console.log(req.header("user-agent"));
         const decoded = jsonwebtoken.verify(token,key["secret"]);
         const user = await User.getActiveUser({_id:decoded._id,'tokens.token':token});
         if(!user){

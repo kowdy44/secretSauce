@@ -55,7 +55,7 @@ paragraphSchema.statics.createAParagraph = async (paragraph, user) => {
 }
 paragraphSchema.statics.paragraphPresent = async (paragraphId) => {
     
-    let paragraph  = await Paragraph.findOne({id:paragraphId});
+    let paragraph  = await Paragraph.findOne({title:paragraphId});
     if(!paragraph){
         return false;
     }else{
