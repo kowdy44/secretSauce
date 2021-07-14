@@ -18,7 +18,7 @@ router.post('/comments/:paraId',auth,async (req, res) => {
             email.sendEmailCommentAdded(paragraphPresent.userEmail,paragraphPresent.title);
             messagejs.sendSuccess(res, "NEW_COMMENT_CREATED")
         }else{
-            messagejs.sendError(res, "ERROR_OCCURED_IN_COMMENT_CREATION_PARAGRAPH_NOT_PRESENT")
+            messagejs.sendError(res, "ERROR_PARAGRAPH_NOT_PRESENT")
         }
         
     } catch (e) {

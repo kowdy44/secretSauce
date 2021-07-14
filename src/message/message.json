@@ -47,5 +47,17 @@
     "PASSWORD_CHANGED":{
         "message": "Password changed successfully",
         "code": 200
+    },
+    "NEW_COMMENT_CREATED":{
+        "message": "New comment has been added.",
+        "code": 200
+    },
+    "ERROR_PARAGRAPH_NOT_PRESENT":{
+        "message": "Error occured in adding comment. Paragraph you referring not found.",
+        "code": 422
+    },
+    "NEW_PARAGRAPH_CREATED":{
+        "message": "New paragraph added sucessfully.",
+        "code": 200
     }
 }
