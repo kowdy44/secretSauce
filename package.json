@@ -4,10 +4,10 @@
   "description": "A serious experiement",
   "main": "server.js",
   "engines": {
-  "node": "10.x"
+    "node": "10.x"
   },
   "scripts": {
-    "start":"node server.js",
+    "start": "node server.js",
     "test": "jest"
   },
   "author": "Donno",
@@ -17,10 +17,10 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.5.2",
     "nodemailer": "^6.1.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "pg": "^8.6.0",
     "random": "^3.0.6",
     "simple-node-logger": "^18.12.22",
     "validator": "^10.11.0"
