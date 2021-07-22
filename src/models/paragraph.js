@@ -67,6 +67,9 @@ paragraphSchema.statics.paragraphPresent = async (paragraphId) => {
 paragraphSchema.statics.getAParagraph = async (paragraphId) => {
     
     let paragraph = await Paragraph.findOne({title:paragraphId});
+    if(!paragraph){
+        throw new Error("ERROR_PARAGRAPH_NOT_PRESENT")
+    }
     let comments  = await CommentsSection.getComments(paragraphId);
     
     paragraph.comments = comments;
