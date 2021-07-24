@@ -100,6 +100,18 @@ userSchema.statics.getActiveUser = async (filter) => {
 
 }
 
+//get active users only : based on isdeleted Flag of User.
+userSchema.statics.userEmailPresent = async (email) => {
+    const user = await User.findOne({email:email});
+
+    if (!user) {
+        return false;
+    }else {
+        return user;
+    }
+
+}
+
 //method is being used here becaz method is currently being called after an instance is being created
 userSchema.methods.generateAuthToken = async function (){
     let token= jsonwebtoken.sign({_id:this._id.toString()},key["secret"]);

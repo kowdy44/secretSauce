@@ -10,20 +10,26 @@ const auth = require("../middleware/authentication");
 const userEmail =require("../utils/email/user-email");
 
 router.post('/users/signup', async (req, res) => {
-    req
+    
     const user = new User(req.body)
 
     try {
-        await user.save();
-        //it generates token and saves the token to user model
-        let token = await user.generateAuthToken();
-        let userRes={
+        let userDB = await User.userEmailPresent(user.email);
+        if(!userDB){
+            await user.save();
+            //it generates token and saves the token to user model
+            let token = await user.generateAuthToken();
+            let userRes={
             userDetail:userUtil.objectFormat(user,["email","name","age"]),
             _id:token,
             message:"Signup successful!"
+            }
+            res.status(201).send(userRes);
+            userEmail.sendEmailSignUp(user.email);
+        }else{
+            throw new Error("EMAIL_ALREADY_REGISTERED");
         }
-        res.status(201).send(userRes);
-        userEmail.sendEmailSignUp(user.email);
+        
     } catch (e) {
         messagejs.sendError(res, e.message)
     }

@@ -8,7 +8,6 @@ const paragraphSchemaObject = {
     title: {
         type: String,
         required: true,
-        unique: true,
         trim: true
     },
     content: {
@@ -24,6 +23,16 @@ const paragraphSchemaObject = {
                 throw new Error('Email is invalid')
             }
         }
+    },
+    customId:{
+        type:String,
+        description:"Custom ID which is unique combination of Email and title",
+        required:true,
+        unique:true,        
+    },
+    created:{
+        type:Date,
+        default: new Date()
     },
     isdeleted: {
         type: Boolean,
@@ -49,13 +58,15 @@ paragraphSchema.statics.createAParagraph = async (paragraph, user) => {
     fields.forEach(ele => {
         obj[ele] = paragraph[ele];
     });
+    /*cutomId generation which is combination of userEmail and title */
+    obj["customId"]=obj["userEmail"]+obj["title"];
     const paragraphObj = new Paragraph(obj);
     await paragraphObj.save();
     return paragraphObj;
 }
 paragraphSchema.statics.paragraphPresent = async (paragraphId) => {
     
-    let paragraph  = await Paragraph.findOne({title:paragraphId});
+    let paragraph  = await Paragraph.findOne({customId:paragraphId});
     if(!paragraph){
         return false;
     }else{
@@ -66,7 +77,7 @@ paragraphSchema.statics.paragraphPresent = async (paragraphId) => {
 /* Get a paragraph with comments appended on them */
 paragraphSchema.statics.getAParagraph = async (paragraphId) => {
     
-    let paragraph = await Paragraph.findOne({title:paragraphId});
+    let paragraph = await Paragraph.findOne({customId:paragraphId});
     if(!paragraph){
         throw new Error("ERROR_PARAGRAPH_NOT_PRESENT")
     }
