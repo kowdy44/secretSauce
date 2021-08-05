@@ -1,3 +1,5 @@
+//For Environment variables
+require('dotenv').config()/*Paasing nothing in config reads .env file by default */
 
 const express = require('express')
 require('./src/db/mongoose')

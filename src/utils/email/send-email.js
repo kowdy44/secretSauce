@@ -2,10 +2,10 @@
 const nodemailer = require("nodemailer");
 
 //Configuration for email
-const serviceHost = 'smtp.gmail.com';
-const servicePort = 465;
-const serviceUsername = 'yourtravelbuddy44@gmail.com';
-const servicepass = 'eawd dhrj dian jvum';
+const serviceHost = process.env.EMAIL_SERVICE_HOST;
+const servicePort = process.env.EMAIL_SERVICE_PORT;
+const serviceUsername = process.env.EMAIL_SERVICE_USERNAME;
+const servicepass = process.env.EMAIL_SERVICE_PASS;
 
 function sendMailNow(emailContent) {
   return new Promise(function (resolve, reject) {
