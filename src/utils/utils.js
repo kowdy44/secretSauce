@@ -11,7 +11,9 @@ const objectFormat =  function(object,allowedFieldsArray){
 }
 const genRandomNum = function(){
     //genarate a random number 
-    let randomKey = random.int(100000, 999999);
+    let minNumber = process.env.RANDOMNUM_MIN
+    let maxNumber = process.env.RANDOMNUM_MAX
+    let randomKey = random.int(minNumber, maxNumber);
     return randomKey;
 }
  

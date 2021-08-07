@@ -11,9 +11,10 @@ const userEmail =require("../utils/email/user-email");
 
 router.post('/users/signup', async (req, res) => {
     
-    const user = new User(req.body)
+    
 
     try {
+        const user = new User(req.body)
         let userDB = await User.userEmailPresent(user.email);
         if(!userDB){
             await user.save();
