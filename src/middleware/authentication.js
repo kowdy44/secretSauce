@@ -1,13 +1,32 @@
 "use strict"
 const jsonwebtoken=require("jsonwebtoken");
 const User = require("../models/user");
+const APILogs = require("../models/APILogs");
 const messagejs = require("../message/message.js");
 const key = require("./key.json")
 let auth = async function(req,res,next){
     try {
         //For checking auth token and authenticating the user, throw Error if not authenticated.
-        const token= req.header("Authorization");
-        console.log(req.header("user-agent"));
+        const token = req.header("Authorization");
+
+        //-----------For logging Requests that reached system------------------
+        
+        const { rawHeaders, httpVersion, method, socket, url } = req;
+        const { remoteAddress, remoteFamily } = socket;
+        var stringdata=JSON.stringify({
+            timestamp: Date.now(),
+            rawHeaders,
+            httpVersion,
+            method,
+            remoteAddress,
+            remoteFamily,
+            url
+            })
+        
+        const apilogs = APILogs({ data: stringdata });
+        await apilogs.save();
+        //----------------------------------------------------------------------
+
         const decoded = jsonwebtoken.verify(token,key["secret"]);
         const user = await User.getActiveUser({_id:decoded._id,'tokens.token':token});
         if(!user){
