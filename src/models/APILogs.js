@@ -1,6 +1,10 @@
 "use strict"
 const mongoose = require('mongoose')
 const APILogsSchemaObject = {
+    userId: {
+        type: String,
+        required: true
+    },
     data: {
         type: String,
         required: true

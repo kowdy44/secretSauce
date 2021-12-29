@@ -8,6 +8,13 @@ let auth = async function(req,res,next){
     try {
         //For checking auth token and authenticating the user, throw Error if not authenticated.
         const token = req.header("Authorization");
+        const decoded = jsonwebtoken.verify(token,key["secret"]);
+        const user = await User.getActiveUser({_id:decoded._id,'tokens.token':token});
+        if(!user){
+            throw new Error("USER_NOT_FOUND");
+        }
+        req.token = token;
+        req.user = user;
 
         //-----------For logging Requests that reached system------------------
         
@@ -23,17 +30,10 @@ let auth = async function(req,res,next){
             url
             })
         
-        const apilogs = APILogs({ data: stringdata });
+        const apilogs = APILogs({ userId:user.name,data: stringdata });
         await apilogs.save();
         //----------------------------------------------------------------------
 
-        const decoded = jsonwebtoken.verify(token,key["secret"]);
-        const user = await User.getActiveUser({_id:decoded._id,'tokens.token':token});
-        if(!user){
-            throw new Error("USER_NOT_FOUND");
-        }
-        req.token = token;
-        req.user = user;
         next();    
     } catch (e) {
         // res.status(401).send(messagejs.prepareErrorObject("AUTH_REQUIRED"));
