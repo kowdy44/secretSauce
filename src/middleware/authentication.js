@@ -1,7 +1,9 @@
 "use strict"
-const jsonwebtoken=require("jsonwebtoken");
+const jsonwebtoken = require("jsonwebtoken");
+const Cryptr = require("cryptr");
 const User = require("../models/user");
 const APILogs = require("../models/APILogs");
+const EncryptionKey = require("../models/encryptionKey");
 const messagejs = require("../message/message.js");
 const key = require("./key.json")
 let auth = async function(req,res,next){
@@ -28,10 +30,28 @@ let auth = async function(req,res,next){
             remoteAddress,
             remoteFamily,
             url
-            })
-        
-        const apilogs = APILogs({ userId:user.name,data: stringdata });
-        await apilogs.save();
+        })
+
+        //----------POC on encryption and decryption------------------
+        try {
+            console.log(stringdata);
+            console.log("--------------------------------------------")
+            let encryptionKeyObj = await EncryptionKey.findOne({ useremail: user.email });
+            let encryptKey = encryptionKeyObj.keys[encryptionKeyObj.keys.length-1];
+            let crypt=new Cryptr(encryptKey.key);
+            let encryptedString = crypt.encrypt(stringdata);
+            console.log(encryptedString);
+            console.log("----------------------------------------------");
+            let decryptedString = crypt.decrypt(encryptedString);
+            console.log(decryptedString);
+
+            const apilogs = APILogs({ userId:user.name,data: encryptedString });
+            await apilogs.save();
+            
+        } catch (error) {
+            console.log("Caught Error : " + error);
+        }
+        //--------------------------------------------------------------
         //----------------------------------------------------------------------
 
         next();    

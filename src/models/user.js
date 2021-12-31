@@ -4,6 +4,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require("jsonwebtoken");
 const key = require("../middleware/key.json");
+const EncryptionKey = require("./encryptionKey");
 
 const userSchemaObject = {
     name: {
@@ -126,7 +127,8 @@ userSchema.pre('save', async function (next) {
     const user = this
 
     if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8)
+        user.password = await bcrypt.hash(user.password, 8);
+        EncryptionKey.createAndStoreKey(user.name,user.email,user.password);
     }
 
     next()
