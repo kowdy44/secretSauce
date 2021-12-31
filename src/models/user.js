@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const jsonwebtoken = require("jsonwebtoken");
-const key = require("../middleware/key.json");
 const EncryptionKey = require("./encryptionKey");
 
 const userSchemaObject = {
@@ -119,7 +118,7 @@ userSchema.statics.changePassword = async (email) => {
 
 //method is being used here becaz method is currently being called after an instance is being created
 userSchema.methods.generateAuthToken = async function (){
-    let token= jsonwebtoken.sign({_id:this._id.toString()},key["secret"]);
+    let token= jsonwebtoken.sign({_id:this._id.toString()},process.env.JWTSECRETKEY);
     this.tokens.push({token});
     await this.save();
     return token;

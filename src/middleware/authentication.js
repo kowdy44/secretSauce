@@ -5,12 +5,11 @@ const User = require("../models/user");
 const APILogs = require("../models/APILogs");
 const EncryptionKey = require("../models/encryptionKey");
 const messagejs = require("../message/message.js");
-const key = require("./key.json")
 let auth = async function(req,res,next){
     try {
         //For checking auth token and authenticating the user, throw Error if not authenticated.
         const token = req.header("Authorization");
-        const decoded = jsonwebtoken.verify(token,key["secret"]);
+        const decoded = jsonwebtoken.verify(token,process.env.JWTSECRETKEY);
         const user = await User.getActiveUser({_id:decoded._id,'tokens.token':token});
         if(!user){
             throw new Error("USER_NOT_FOUND");
