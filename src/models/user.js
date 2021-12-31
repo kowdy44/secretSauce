@@ -113,6 +113,10 @@ userSchema.statics.userEmailPresent = async (email) => {
 
 }
 
+userSchema.statics.changePassword = async (email) => {
+    //Need to logic Here
+}
+
 //method is being used here becaz method is currently being called after an instance is being created
 userSchema.methods.generateAuthToken = async function (){
     let token= jsonwebtoken.sign({_id:this._id.toString()},key["secret"]);
