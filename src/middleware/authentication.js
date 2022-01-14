@@ -55,7 +55,7 @@ let auth = async function(req,res,next){
 
         next();    
     } catch (e) {
-        // res.status(401).send(messagejs.prepareErrorObject("AUTH_REQUIRED"));
+        
         messagejs.sendError(res, "AUTH_REQUIRED")
     }
     
