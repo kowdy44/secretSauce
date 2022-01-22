@@ -18,12 +18,9 @@ router.post('/users/signup', async (req, res) => {
         let userDB = await User.userEmailPresent(user.email);
         if(!userDB){
             await user.save();
-            //it generates token and saves the token to user model
-            let token = await user.generateAuthToken();
             let userRes={
             userDetail:userUtil.objectFormat(user,["email","name","age"]),
-            _id:token,
-            message:"Signup successful!"
+            message:"Signup successful! Now login with username and password."
             }
             res.status(201).send(userRes);
             userEmail.sendEmailSignUp(user.email);
@@ -40,7 +37,8 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         // const token = jsonwebtoken.sign({_id:user._id},"ThisisSecret");
-        let token = await user.generateAuthToken();
+        let clientData=userUtil.getClientDetails(req);
+        let token = await user.generateAuthToken(clientData);
         res.status(200).send({_id:token});
     } catch (e) {
         messagejs.sendError(res, e.message)

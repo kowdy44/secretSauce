@@ -52,6 +52,9 @@ const userSchemaObject = {
             token:{
                 type:String,
                 required:true,
+            },
+            clientData: {
+                type:String
             }
         }
     ],
@@ -117,9 +120,9 @@ userSchema.statics.changePassword = async (email) => {
 }
 
 //method is being used here becaz method is currently being called after an instance is being created
-userSchema.methods.generateAuthToken = async function (){
+userSchema.methods.generateAuthToken = async function (clientData){
     let token= jsonwebtoken.sign({_id:this._id.toString()},process.env.JWTSECRETKEY);
-    this.tokens.push({token});
+    this.tokens.push({token,clientData});
     await this.save();
     return token;
 
